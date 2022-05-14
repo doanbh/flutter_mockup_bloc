@@ -10,7 +10,7 @@ class LoadImage extends StatelessWidget {
     this.height,
     this.fit = BoxFit.cover, 
     this.format = ImageFormat.png,
-    this.holderImg = 'none',
+    this.holderImg = 'placeholder_image',
     this.cacheWidth,
     this.cacheHeight,
   }) : super(key: key);

@@ -59,6 +59,10 @@ class GlobalViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
+  Future<void> onSwitchToVietnam() async {
+    await _onUpdateLocaleClicked(const Locale('vi'));
+  }
+
   Future<void> onSwitchToDutch() async {
     await _onUpdateLocaleClicked(const Locale('nl'));
   }
@@ -120,6 +124,8 @@ class GlobalViewModel with ChangeNotifierEx {
 
   String getCurrentLanguage() {
     switch (localeDelegate.activeLocale?.languageCode) {
+      case 'vi':
+        return 'Vietname';
       case 'nl':
         return 'Nederlands';
       case 'en':

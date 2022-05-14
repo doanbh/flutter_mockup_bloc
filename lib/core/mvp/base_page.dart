@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mockup_bloc/core/mvp/base_presenter.dart';
 import 'package:flutter_mockup_bloc/presentation/widgets/dialog/progress_dialog.dart';
 import 'package:flutter_mockup_bloc/utils/device/toast_utils.dart';
+import 'package:flutter_mockup_bloc/utils/ui/dialog/base_custom_dialog.dart';
+import 'package:flutter_mockup_bloc/utils/ui/dialog/dialog_action.dart';
 import 'base_state_view.dart';
 import 'package:flutter_mockup_bloc/common/common_export.dart';
 
@@ -49,6 +51,46 @@ mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<
         debugPrint(e.toString());
       }
     }
+  }
+
+  @override
+  void showCustomProgress({Widget? loader}) {
+    if (mounted && !_isShowDialog) {
+      _isShowDialog = true;
+      try {
+        showTransparentDialog(
+            context: context,
+            barrierDismissible: false,
+            builder:(_) {
+              return WillPopScope(
+                onWillPop: () async {
+                  _isShowDialog = false;
+                  return Future.value(true);
+                },
+                child: loader!,
+              );
+            }
+        );
+      } catch(e) {
+        print(e);
+      }
+    }
+  }
+
+  @override
+  void showDialogCustom(Widget child, {String title = "365"}) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return BaseCustomDialog(
+            title: title,
+            child: child,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          );
+        });
   }
 
   @override

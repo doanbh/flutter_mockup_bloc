@@ -10,9 +10,10 @@ import 'package:flutter_mockup_bloc/resource/app_colors.dart';
 import 'package:flutter_mockup_bloc/resource/app_fonts.dart';
 import 'package:flutter_mockup_bloc/resource/app_text_styles.dart';
 import 'package:flutter_mockup_bloc/utils/ui/icon_utils.dart';
+import 'package:intl/intl.dart';
 
 class AuthorItem extends StatelessWidget {
-  const AuthorItem({
+  AuthorItem({
     Key? key,
     required this.model,
     this.switchTitlePositionWithSubtitle = false,
@@ -34,6 +35,8 @@ class AuthorItem extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final bool addDeleteBtnBehind;
   final void Function()? onDeleteBtnBehindTap;
+
+  final DateFormat dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
 
   _onTap(BuildContext context){
 
@@ -92,25 +95,26 @@ class AuthorItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IconButton saveBtn, chatBtn;
+    final width = MediaQuery.of(context).size.width;
 
     saveBtn = IconButton(
       onPressed: () => AppDialogs.showLoginDialog(
         context,
-        'Bạn chưa đăng nhập. Vui lòng đăng nhập để lưu ứng viên này!',
+        'Bạn chưa đăng nhập. Vui lòng đăng nhập để sử dụng tính năng này!',
       ),
       icon: IconUtils.dialog_check_icon,
     );
     chatBtn = IconButton(
       onPressed: () => AppDialogs.showLoginDialog(
         context,
-        'Bạn chưa đăng nhập. Vui lòng đăng nhập để chat với ứng viên này!',
+        'Bạn chưa đăng nhập. Vui lòng đăng nhập để sử dụng tính năng này!',
       ),
       icon: IconUtils.dialog_check_icon,
     );
 
     late final Widget avatar = ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: LoadImage(model.avatar!),
+      child: LoadImage(model.avatar!, width: width/3, height: width/3,),
     );
 
     /*
@@ -223,11 +227,11 @@ class AuthorItem extends StatelessWidget {
                   ),
                   _getItemDataWithIcon(
                     Icons.insert_drive_file,
-                    model.id!,
+                    "(ID) ${model.id!}",
                   ),
                   _getItemDataWithIcon(
                     Icons.calendar_today_outlined,
-                    model.createdAt!,
+                    "Tạo ngày: ${DateFormat("dd-MM-yyyy").format(dateFormat.parse(model.createdAt!))}",
                   ),
                 ]),
               ),

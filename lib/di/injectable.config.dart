@@ -18,11 +18,6 @@ import '../repository/refresh/refresh_repository.dart' as _i16;
 import '../repository/secure_storage/auth/auth_storage.dart' as _i11;
 import '../repository/secure_storage/secure_storage.dart' as _i9;
 import '../repository/shared_prefs/local/local_storage.dart' as _i12;
-import '../utils/interceptor/combining_smart_interceptor.dart' as _i19;
-import '../utils/interceptor/network_auth_interceptor.dart' as _i15;
-import '../utils/interceptor/network_error_interceptor.dart' as _i7;
-import '../utils/interceptor/network_log_interceptor.dart' as _i8;
-import '../utils/interceptor/network_refresh_interceptor.dart' as _i18;
 import '../utils/preferences/preferences_storage.dart' as _i5;
 import 'injectable.dart' as _i21; // ignore_for_file: unnecessary_lambdas
 
@@ -36,9 +31,6 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i4.DebugRepository>(
       () => _i4.DebugRepository(get<_i5.SharedPreferenceStorage>()));
   gh.lazySingleton<_i6.FlutterSecureStorage>(() => registerModule.storage());
-  gh.singleton<_i7.NetworkErrorInterceptor>(
-      _i7.NetworkErrorInterceptor(get<_i3.ConnectivityHelper>()));
-  gh.singleton<_i8.NetworkLogInterceptor>(_i8.NetworkLogInterceptor());
   gh.lazySingleton<_i9.SecureStorage>(
       () => _i9.SecureStorage(get<_i6.FlutterSecureStorage>()));
   await gh.singletonAsync<_i10.SharedPreferences>(() => registerModule.prefs(),
@@ -54,24 +46,12 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i11.AuthStorage>(), get<_i3.SharedPreferenceStorage>()));
   gh.lazySingleton<_i13.LocaleRepository>(
       () => _i13.LocaleRepository(get<_i3.SharedPreferenceStorage>()));
-  gh.singleton<_i15.NetworkAuthInterceptor>(
-      _i15.NetworkAuthInterceptor(get<_i11.AuthStorage>()));
   gh.lazySingleton<_i16.RefreshRepository>(
       () => _i16.RefreshRepository(get<_i11.AuthStorage>()));
   gh.factory<_i17.GlobalViewModel>(() => _i17.GlobalViewModel(
       get<_i13.LocaleRepository>(),
       get<_i4.DebugRepository>(),
       get<_i12.LocalStorage>()));
-  gh.singleton<_i18.NetworkRefreshInterceptor>(_i18.NetworkRefreshInterceptor(
-      get<_i11.AuthStorage>(), get<_i16.RefreshRepository>()));
-  gh.lazySingleton<_i19.CombiningSmartInterceptor>(() =>
-      registerModule.provideCombiningSmartInterceptor(
-          get<_i8.NetworkLogInterceptor>(),
-          get<_i15.NetworkAuthInterceptor>(),
-          get<_i7.NetworkErrorInterceptor>(),
-          get<_i18.NetworkRefreshInterceptor>()));
-  gh.lazySingleton<_i20.Dio>(
-      () => registerModule.provideDio(get<_i19.CombiningSmartInterceptor>()));
   return get;
 }
 

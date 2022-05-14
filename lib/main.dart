@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mockup_bloc/app.dart';
+import 'package:flutter_mockup_bloc/common/config/configuration.dart';
+import 'package:flutter_mockup_bloc/common/config/index.dart';
 import 'package:flutter_mockup_bloc/di/environments.dart';
 import 'package:flutter_mockup_bloc/di/injectable.dart';
 import 'package:flutter_mockup_bloc/main_common.dart';
@@ -23,6 +25,7 @@ Future<void> main() async {
     print('Starting app from main.dart');
     await configureDependencies(Environments.dev);
     await SpUtil.getInstance();
+    Configurations().setConfigurationValues(config);
 
     runApp(MyApp());
   });

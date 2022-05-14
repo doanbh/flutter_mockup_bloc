@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mockup_bloc/common/loading/loading.dart';
 import 'package:flutter_mockup_bloc/core/mvp/base_presenter.dart';
 import 'package:flutter_mockup_bloc/core/mvp/base_state_view.dart';
 import 'package:flutter_mockup_bloc/core/mvp/base_cubit.dart';
@@ -34,7 +35,7 @@ import 'package:flutter_mockup_bloc/repository/splash/splash_repo.dart';
 
 abstract class SplashView implements BaseView {
 
-  void gotoHome();
+  void gotoHome(UserInfoRepository userInfoRepository);
 
   void gotoLogin();
 }
@@ -76,10 +77,12 @@ class SplashPresenter extends BasePresenter<SplashView, SplashCubit>  {
 
   _checkToken() async {
     if (cubit._splashRepo.checkTokenExits()){
+      view.showCustomProgress(loader: kLoadingWidget());
       UserItem user = await cubit._userInfoRepository.getUserInfo();
+      cubit._userInfoRepository.userInfo = user.data!.userInfo!;
       Future.delayed(const Duration(seconds: 2));
       emitState(LoadSuccessState(model: 2));
-      view.gotoHome();
+      view.gotoHome(cubit._userInfoRepository);
       // UserItem user = cubit.getInfoUser();
     } else {
       //goto auth

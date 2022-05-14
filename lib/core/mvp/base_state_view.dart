@@ -27,6 +27,12 @@ abstract class BaseView {
   /// Show Toast
   void showToast(String string);
 
+  /// Progress
+  void showCustomProgress({Widget loader});
+
+  /// showDialogCustom
+  void showDialogCustom(Widget child, {String title});
+
   void initViewDone();
 }
 

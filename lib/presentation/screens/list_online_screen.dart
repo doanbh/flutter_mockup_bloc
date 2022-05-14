@@ -5,40 +5,41 @@ import 'package:flutter_mockup_bloc/presentation/widgets/author/author_item.dart
 import 'package:flutter_mockup_bloc/presenters/home_presenter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class ListOnlineScreen extends StatefulWidget {
-  ListOnlineScreen({Key? key, this.loadMoreCallback}) : super(key: key);
-  final Function()? loadMoreCallback;
-
-  @override
-  State<ListOnlineScreen> createState() => _ListOnlineScreenState();
+class ListOnlineHandleDataFromNetwork {
+  late void Function() notifyLoadDone;
 }
 
-class _ListOnlineScreenState extends State<ListOnlineScreen> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
-  List<ItemsAuthorResponse> _listAuthorsResponseItem = [];
+class ListOnlineScreen extends StatelessWidget {
+  final Function()? loadMoreCallback;
+  final ListOnlineHandleDataFromNetwork handle;
+  final RefreshController refreshController;
+  // final HomePresenter presenter;
 
-  _ListOnlineScreenState(){
-    _listAuthorsResponseItem = context.read<HomeCubit>().listAuthorsItem;
+  ListOnlineScreen({Key? key, required this.handle, required this.refreshController, this.loadMoreCallback}) : super(key: key){
+    // print("controller");
+    // print(this.controller);
+    this.handle.notifyLoadDone = _onLoadFromServerDone;
+    refreshController.footerMode!.addListener(_handleRefreshController);
+  }
+
+  void _handleRefreshController(){
+   // print("_refreshController: ${refreshController.footerMode!.value}");
   }
 
   void _onRefresh() async{
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
+    refreshController.refreshCompleted();
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
-    widget.loadMoreCallback!();
-    // await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // items.add((items.length+1).toString());
-    // if(mounted)
-    //   setState(() {
-    //
-    //   });
-    // _refreshController.loadComplete();
+    loadMoreCallback!();
+  }
+
+  void _onLoadFromServerDone(){
+    refreshController.loadComplete();
   }
 
   @override
@@ -72,17 +73,18 @@ class _ListOnlineScreenState extends State<ListOnlineScreen> {
           );
         },
       ),
-      controller: _refreshController,
+      controller: refreshController,
       onRefresh: _onRefresh,
       onLoading: _onLoading,
       child: ListView.builder(
+        // shrinkWrap: true,
         itemBuilder: (c, i) {
-          ItemsAuthorResponse authorItem = _listAuthorsResponseItem[i];
+          ItemsAuthorResponse authorItem = context.read<HomeCubit>().listAuthorsItem[i];
           return AuthorItem(
             model: authorItem,
+            margin: const EdgeInsets.only(bottom: 10),
           );
         },
-        itemExtent: 100.0,
         itemCount: context.read<HomeCubit>().listAuthorsItem.length,
       ),
     );

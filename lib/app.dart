@@ -11,7 +11,7 @@ import 'package:flutter_mockup_bloc/core/view_model/global/global_viewmodel.dart
 import 'package:flutter_mockup_bloc/presentation/router/app_router.dart';
 import 'package:flutter_mockup_bloc/presentation/router/route_logging_observer.dart';
 import 'package:flutter_mockup_bloc/presentation/screens/splash_screen.dart';
-import 'package:flutter_mockup_bloc/presentation/screens/test_screen.dart';
+import 'package:flutter_mockup_bloc/presentation/screens/list_offline_screen.dart';
 import 'package:flutter_mockup_bloc/provider/provider_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mockup_bloc/repository/common_data_repo.dart';
@@ -30,18 +30,18 @@ class MyApp extends StatelessWidget {
   void initDio() {
     final List<Interceptor> interceptors = <Interceptor>[];
 
-    /// 统一添加身份验证请求头
+    ///
     interceptors.add(AuthInterceptor());
 
-    /// 刷新Token
+    /// Token
     interceptors.add(TokenInterceptor());
 
-    /// 打印Log(生产模式去除)
+    /// Log nếu ko ở chế độ production
     if (!AppConstants.inProduction) {
       interceptors.add(LoggingInterceptor());
     }
 
-    /// 适配数据(根据自己的数据结构，可自行选择添加)
+    ///
     interceptors.add(AdapterInterceptor());
     configDio(
       // baseUrl: 'https://stoplight.io/mocks/phongdoan/test/11233479/',

@@ -6,6 +6,7 @@ import 'package:flutter_mockup_bloc/presentation/router/app_pages.dart';
 import 'package:flutter_mockup_bloc/presentation/router/app_router.dart';
 import 'package:flutter_mockup_bloc/presentation/widgets/common/common_widget.dart';
 import 'package:flutter_mockup_bloc/presenters/splash_presenter.dart';
+import 'package:flutter_mockup_bloc/repository/auth/user_info_repository.dart';
 import 'package:flutter_mockup_bloc/repository/common_data_repo.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -40,9 +41,10 @@ class SplashScreenState extends State<SplashScreen> with BasePageMixin<SplashScr
                 showToast("model: $a");
               }
               print("state: ${state}");
-              return const Center(
-                child: CommonWidget.centerLoadingCircle,
-              );
+              // return const Center(
+              //   child: CommonWidget.centerLoadingCircle,
+              // );
+              return SizedBox();
             },
           ),
         )
@@ -53,9 +55,13 @@ class SplashScreenState extends State<SplashScreen> with BasePageMixin<SplashScr
   SplashPresenter createPresenter() => new SplashPresenter();
 
   @override
-  void gotoHome() {
+  void gotoHome(UserInfoRepository userInfoRepository) {
     // TODO: implement gotoHome
-    AppRouter.toPage(context, AppPages.Navigation);
+    AppRouter.toPage(
+        context,
+        AppPages.Navigation,
+        arguments: {'userRepository': userInfoRepository},
+    );
   }
 
   @override

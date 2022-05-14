@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mockup_bloc/presentation/screens/home_screen.dart';
-import 'package:flutter_mockup_bloc/presentation/screens/say_hi_screen.dart';
+import 'package:flutter_mockup_bloc/presentation/screens/profile_screen.dart';
 import 'package:flutter_mockup_bloc/provider/data_provider_widget.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         body: IndexedStack(
           children: const [
             HomeScreen(),
-            SayHiScreen(),
+            ProfileScreen(),
           ],
           index: _currentIndex,
         ),
@@ -30,7 +30,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
-              icon: const Icon(Icons.list),
+              icon: const Icon(Icons.home_filled),
               label: localization.todoTitle,
             ),
             BottomNavigationBarItem(

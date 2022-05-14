@@ -5,7 +5,10 @@ import 'package:flutter_mockup_bloc/repository/base_repository.dart';
 
 class AuthorRepository extends BaseRepo{
 
-  getListAuthorRepository() async {
-    return requestNetwork<AuthorResponse>(Method.get, url: Api.GET_LIST_AUTHOR);
+  getListAuthorRepository(currentPos, maxPos) async {
+    final Map<String, dynamic> params = <String, dynamic>{};
+    params['currentPos'] = currentPos;
+    params['maxPos'] = maxPos;
+    return requestNetwork<AuthorResponse>(Method.get, url: Api.GET_LIST_AUTHOR, queryParameters: params,);
   }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mockup_bloc/presentation/modules/auth/login/login_screen.dart';
 import 'package:flutter_mockup_bloc/presentation/router/page_config.dart';
 import 'package:flutter_mockup_bloc/presentation/screens/splash_screen.dart';
+import 'package:flutter_mockup_bloc/repository/auth/user_info_repository.dart';
 import 'package:flutter_mockup_bloc/utils/device/system_utils.dart';
 
 enum AppPages {
@@ -78,7 +79,15 @@ extension AppPagesExtension on AppPages {
           ..pageBuilder = () => LoginScreen(
           );
       case AppPages.Navigation:
-        return PageConfig()..pageBuilder = () => NavigationScreen();
+        // _checkMissingRequiredArgumentsAndAssureError(
+        //   arguments,
+        //   ['userRepository'],
+        // );
+        final UserInfoRepository userRepository = arguments!['userRepository'];
+        return PageConfig()..pageBuilder = () => RepositoryProvider(
+          create: (_) => userRepository,
+          child: NavigationScreen(),
+        );
       default:
         throw StateError(
             "Missing page: ${page.toString()} in AppPagesExtension.getPageConfig()");
