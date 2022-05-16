@@ -8,7 +8,7 @@ import 'package:flutter_mockup_bloc/common/loading/rive_loading.dart';
 
 /// For Loading Widget
 Widget kLoadingWidget() {
-  var loadingConfig = LoadingConfig.fromJson(Configurations.lottieLoadingIcon ?? {});
+  var loadingConfig = LoadingConfig.fromJson(Configurations.lottieLoadingIcon);
   switch (loadingConfig.layout) {
     case LoadingLayout.image:
       return ImageLoading(loadingConfig);

@@ -1,13 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mockup_bloc/core/mvp/base_page.dart';
+import 'package:flutter_mockup_bloc/core/view_model/global/global_viewmodel.dart';
 import 'package:flutter_mockup_bloc/model/UserItem.dart';
+import 'package:flutter_mockup_bloc/presentation/router/app_pages.dart';
+import 'package:flutter_mockup_bloc/presentation/router/app_router.dart';
 import 'package:flutter_mockup_bloc/presentation/widgets/common/load_image.dart';
 import 'package:flutter_mockup_bloc/presenters/profile_presenter.dart';
+import 'package:flutter_mockup_bloc/provider/provider_widget.dart';
 import 'package:flutter_mockup_bloc/repository/auth/user_info_repository.dart';
 import 'package:flutter_mockup_bloc/resource/app_colors.dart';
+import 'package:flutter_mockup_bloc/resource/app_constant.dart';
 import 'package:flutter_mockup_bloc/resource/gaps.dart';
+import 'package:flutter_mockup_bloc/utils/locale/localization.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen();
@@ -23,24 +31,30 @@ class _ProfileScreenState extends State<ProfileScreen> with BasePageMixin<Profil
   Widget build(BuildContext context) {
     final user = context.read<UserInfoRepository>().userInfo;
 
-    return Scaffold(
-      appBar: buildAppBar(context),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        children: [
-          ProfileWidget(
-            imagePath: user.userImage!,
-            onClicked: () async {},
+    return ProviderWidget<GlobalViewModel>(
+      create: () => GetIt.I()..init(),
+      consumerWithThemeAndLocalization: (context, viewModel, child, theme, localization) => Consumer<GlobalViewModel>(
+        builder: (context, viewModel, child) => Scaffold(
+          backgroundColor: theme.colorsTheme.background,
+          appBar: buildAppBar(context, localization),
+          body: ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              ProfileWidget(
+                imagePath: user.userImage!,
+                onClicked: () async {},
+              ),
+              const SizedBox(height: 24),
+              buildName(user),
+              const SizedBox(height: 24),
+              Center(child: buildUpgradeButton(localization)),
+              const SizedBox(height: 24),
+              NumbersWidget(localization),
+              const SizedBox(height: 48),
+              buildAbout(user, localization),
+            ],
           ),
-          const SizedBox(height: 24),
-          buildName(user),
-          const SizedBox(height: 24),
-          Center(child: buildUpgradeButton()),
-          const SizedBox(height: 24),
-          NumbersWidget(),
-          const SizedBox(height: 48),
-          buildAbout(user),
-        ],
+        ),
       ),
     );
   }
@@ -59,23 +73,23 @@ class _ProfileScreenState extends State<ProfileScreen> with BasePageMixin<Profil
     ],
   );
 
-  Widget buildUpgradeButton() => ButtonWidget(
-    text: 'Upgrade To PRO',
+  Widget buildUpgradeButton(Localization localization) => ButtonWidget(
+    text: localization.upToPro,
     onClicked: () {},
   );
 
-  Widget buildAbout(UserInfo user) => Container(
+  Widget buildAbout(UserInfo user, Localization localization) => Container(
     padding: EdgeInsets.symmetric(horizontal: 48),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'About',
+          localization.about,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         Text(
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+          localization.detailAbout,
           style: TextStyle(fontSize: 16, height: 1.4),
         ),
       ],
@@ -92,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BasePageMixin<Profil
   }
 }
 
-AppBar buildAppBar(BuildContext context) {
+AppBar buildAppBar(BuildContext context, Localization localization) {
   final iconMoon = CupertinoIcons.moon_stars;
   final iconSignOut = CupertinoIcons.arrow_up_right_circle_fill;
 
@@ -106,13 +120,15 @@ AppBar buildAppBar(BuildContext context) {
     actions: [
       GestureDetector(
         onTap: (){
-
+          AppRouter.replaceAllWithPage(context, AppPages.Auth_Login);
+          SpUtil.putString(AppConstants.accessToken, "");
+          SpUtil.putString(AppConstants.refreshToken, "");
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              Text("Đăng xuất", style: TextStyle(color: AppColors.primary),),
+              Text(localization.logOut, style: TextStyle(color: AppColors.primary),),
               Gaps.hGap5,
               Icon(iconSignOut, color: AppColors.primary)
             ],
@@ -146,15 +162,18 @@ class ButtonWidget extends StatelessWidget {
 }
 
 class NumbersWidget extends StatelessWidget {
+  final Localization localization;
+  NumbersWidget(this.localization);
+
   @override
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      buildButton(context, '4.8', 'Ranking'),
+      buildButton(context, '4.8', localization.ranking),
       buildDivider(),
-      buildButton(context, '35', 'Following'),
+      buildButton(context, '35', localization.following),
       buildDivider(),
-      buildButton(context, '50', 'Followers'),
+      buildButton(context, '50', localization.followers),
     ],
   );
   Widget buildDivider() => Container(

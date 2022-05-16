@@ -4,7 +4,7 @@ import 'custom_list_tile.dart';
 import 'header.dart';
 
 class CustomDrawer extends StatefulWidget {
-  final Function()? onTapChangeLanguage;
+  final Function(Action_Drawer)? onTapChangeLanguage;
   const CustomDrawer({Key? key, this.onTapChangeLanguage}) : super(key: key);
 
   @override
@@ -51,13 +51,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 icon: Icons.brightness_4_rounded,
                 title: 'Sáng/Tối',
                 infoCount: 0,
+                onTap: () => widget.onTapChangeLanguage!(Action_Drawer.theme),
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
                 icon: Icons.language,
                 title: 'Ngôn ngữ',
                 infoCount: 0,
-                onTap: widget.onTapChangeLanguage!,
+                onTap: () => widget.onTapChangeLanguage!(Action_Drawer.language),
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -68,27 +69,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
               CustomListTile(
                 isCollapsed: _isCollapsed,
                 icon: Icons.pin_drop,
-                title: 'Destinations',
+                title: 'Vị trí',
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
                 icon: Icons.message_rounded,
-                title: 'Messages',
+                title: 'Tin nhắn',
                 infoCount: 8,
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
                 icon: Icons.cloud,
-                title: 'Weather',
+                title: 'Thời tiết',
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
                 icon: Icons.airplane_ticket,
-                title: 'Flights',
+                title: 'Chuyến bay',
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
               ),
@@ -97,13 +98,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
               CustomListTile(
                 isCollapsed: _isCollapsed,
                 icon: Icons.notifications,
-                title: 'Notifications',
+                title: 'Thông báo',
                 infoCount: 2,
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
                 icon: Icons.settings,
-                title: 'Settings',
+                title: 'Cài đặt',
                 infoCount: 0,
               ),
               const SizedBox(height: 10),
@@ -134,4 +135,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
       ),
     );
   }
+}
+
+enum Action_Drawer{
+  theme, language
 }

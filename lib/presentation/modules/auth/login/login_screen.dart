@@ -8,6 +8,7 @@ import 'package:flutter_mockup_bloc/presentation/widgets/common/custom_text_fiel
 import 'package:flutter_mockup_bloc/presentation/widgets/common/load_image.dart';
 import 'package:flutter_mockup_bloc/presentation/widgets/common/loading_button.dart';
 import 'package:flutter_mockup_bloc/presenters/login_presenter.dart';
+import 'package:flutter_mockup_bloc/repository/auth/user_info_repository.dart';
 import 'package:flutter_mockup_bloc/resource/app_constant.dart';
 import 'package:flutter_mockup_bloc/resource/gaps.dart';
 
@@ -137,9 +138,9 @@ class _LoginScreenState extends State<LoginScreen> with BasePageMixin<LoginScree
   }
 
   @override
-  void gotoHome() {
+  void gotoHome(UserInfoRepository userInfoRepo) {
     // TODO: implement gotoHome
-    AppRouter.toPage(context, AppPages.Navigation);
+    AppRouter.toPage(context, AppPages.Navigation, arguments: {'userRepository': userInfoRepo},);
   }
 
   @override

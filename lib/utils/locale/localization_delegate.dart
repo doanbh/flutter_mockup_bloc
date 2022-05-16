@@ -13,7 +13,7 @@ typedef LocaleFilter = bool Function(String languageCode);
 
 class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   static LocaleFilter? localeFilter;
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'vi', scriptCode: null, countryCode: null);
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
   static const _supportedLocales = [
     Locale.fromSubtags(languageCode: 'vi', scriptCode: null, countryCode: null),

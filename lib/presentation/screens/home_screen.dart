@@ -12,6 +12,7 @@ import 'package:flutter_mockup_bloc/presentation/widgets/common/custom_tab_bar.d
 import 'package:flutter_mockup_bloc/presentation/widgets/common/scafold/custom_scaffold.dart';
 import 'package:flutter_mockup_bloc/presentation/widgets/common/widget_utils.dart';
 import 'package:flutter_mockup_bloc/presentation/widgets/dialog/select_language_dialog.dart';
+import 'package:flutter_mockup_bloc/presentation/widgets/dialog/select_theme_dialog.dart';
 import 'package:flutter_mockup_bloc/presentation/widgets/drawer/custom_drawer.dart';
 import 'package:flutter_mockup_bloc/presenters/home_presenter.dart';
 import 'package:flutter_mockup_bloc/resource/app_colors.dart';
@@ -55,18 +56,34 @@ class _HomeScreenState extends State<HomeScreen> with BasePageMixin<HomeScreen, 
               shadowColor: AppColors.appBarShadow,
             ),
           drawer: CustomDrawer(
-            onTapChangeLanguage: (){
-              Navigator.pop(context);
-              showCupertinoDialog(
-                context: context,
-                builder: (context){
-                  return SelectLanguageDialog(
-                    goBack: (){
-                      Navigator.pop(context);
-                    },
+            onTapChangeLanguage: (action){
+              switch (action){
+                case Action_Drawer.theme:
+                  Navigator.pop(context);
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (context){
+                        return SelectThemeDialog(
+                          goBack: (){
+                            Navigator.pop(context);
+                          },
+                        );
+                      }
                   );
-                }
-              );
+                  break;
+                default:
+                Navigator.pop(context);
+                showCupertinoDialog(
+                    context: context,
+                    builder: (context){
+                      return SelectLanguageDialog(
+                        goBack: (){
+                          Navigator.pop(context);
+                        },
+                      );
+                    }
+                );
+              }
             },
           ),
           body: BlocProvider(

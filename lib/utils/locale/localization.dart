@@ -370,6 +370,17 @@ class Localization {
   /// en:  **'System default'**
   String get themeModeLabelSystem => _t(LocalizationKeys.themeModeLabelSystem);
 
+  ///
+  String get logOut => _t(LocalizationKeys.logOut);
+  String get home => _t(LocalizationKeys.home);
+  String get profile => _t(LocalizationKeys.profile);
+  String get upToPro => _t(LocalizationKeys.upToPro);
+  String get ranking => _t(LocalizationKeys.ranking);
+  String get following => _t(LocalizationKeys.following);
+  String get followers => _t(LocalizationKeys.followers);
+  String get about => _t(LocalizationKeys.about);
+  String get detailAbout => _t(LocalizationKeys.detailAbout);
+
   String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }

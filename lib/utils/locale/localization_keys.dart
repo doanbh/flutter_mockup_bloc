@@ -311,4 +311,14 @@ class LocalizationKeys {
   /// en:  **'System default'**
   static const themeModeLabelSystem = 'theme_mode_label_System';
 
+  static const logOut = 'log_out';
+  static const home = 'home';
+  static const profile = 'profile';
+  static const upToPro = 'up_to_pro';
+  static const ranking = 'ranking';
+  static const following = 'following';
+  static const followers = 'followers';
+  static const about = 'about';
+  static const detailAbout = 'detail_about';
+
 }

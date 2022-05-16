@@ -31,11 +31,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
           items: [
             BottomNavigationBarItem(
               icon: const Icon(Icons.home_filled),
-              label: localization.todoTitle,
+              label: localization.home,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.settings),
-              label: localization.settingsTitle,
+              icon: const Icon(Icons.person_pin),
+              label: localization.profile,
             ),
           ],
         ),
